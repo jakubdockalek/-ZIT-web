@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZIT ukol</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      color: #222;
+    }
+
+    nav {
+      background-color: #333;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav button {
+      background-color: #555;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background-color: #888;
+    }
+
+    .page {
+      display: none;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border: 1px solid #ccc;
+    }
+
+    .active {
+      display: block;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2a5db0;
+    }
+
+    .box {
+      border: 2px solid #2a5db0;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .box button {
+      padding: 8px 14px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    input {
+      padding: 8px;
+      font-size: 16px;
+      width: 60%;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .big {
+      font-size: 40px;
+      text-align: center;
+      margin: 10px;
+    }
+
+
+    /* simple responsive part for phones */
+    @media (max-width: 600px) {
+      .page {
+        margin: 10px;
+        padding: 10px;
+      }
+      nav button {
+        display: block;
+        width: 90%;
+        margin: 5px auto;
+      }
+      input {
+        width: 95%;
+        margin-bottom: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <button onclick="showPage('intro')">Home</button>
+    <button onclick="showPage('tools')">Mini Tools</button>
+  </nav>
+
+  <!-- PAGE 1: INTRO -->
+  <div id="intro" class="page active">
+    <h1>Welcome to my website!</h1>
+    <p>Hello. This is my first website.</p>
+    <p>On the second page you can try 3 small tools:</p>
+    <ul>
+      <li>A to-do list</li>
+      <li>A click counter</li>
+      <li>A dice roller</li>
+    </ul>
+    <p>Click the button to try them!</p>
+    <p style="text-align:center;">
+      <button onclick="showPage('tools')" style="padding:10px 20px; font-size:16px; cursor:pointer;">Go to Mini Tools</button>
+    </p>
+  </div>
+
+  <!-- PAGE 2: TOOLS -->
+  <div id="tools" class="page">
+    <h1>Mini Tools</h1>
+
+    <!-- IDEA 1: to-do list -->
+    <div class="box">
+      <h2>1. To-do list</h2>
+      <input type="text" id="taskInput" placeholder="Write a task...">
+      <button onclick="addTask()">Add</button>
+      <ul id="taskList"></ul>
+      <p style="font-size:14px;">Click a task to remove it.</p>
+    </div>
+
+    <!-- IDEA 2: click counter -->
+    <div class="box">
+      <h2>2. Click counter</h2>
+      <div class="big" id="counterNumber">0</div>
+      <p style="text-align:center;">
+        <button onclick="changeCounter(1)">+1</button>
+        <button onclick="changeCounter(-1)">-1</button>
+        <button onclick="resetCounter()">Reset</button>
+      </p>
+    </div>
+
+    <!-- IDEA 3: dice roller -->
+    <div class="box">
+      <h2>3. Dice roller</h2>
+      <div class="big" id="diceResult">?</div>
+      <p style="text-align:center;">
+        <button onclick="rollDice()">Roll the dice</button>
+      </p>
+    </div>
+  </div>
+
+
+  <script>
+    // switch between pages
+    function showPage(pageId) {
+      document.getElementById('intro').classList.remove('active');
+      document.getElementById('tools').classList.remove('active');
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // IDEA 1: to-do list
+    function addTask() {
+      var input = document.getElementById('taskInput');
+      var text = input.value;
+
+      if (text.trim() == '') {
+        alert('Please write something first!');
+        return;
+      }
+
+      var li = document.createElement('li');
+      li.textContent = text;
+      li.style.cursor = 'pointer';
+      li.onclick = function () {
+        li.remove();
+      };
+
+      document.getElementById('taskList').appendChild(li);
+      input.value = '';
+      input.focus();
+    }
+
+    // pressing Enter also adds the task
+    document.getElementById('taskInput').addEventListener('keydown', function (e) {
+      if (e.key == 'Enter') {
+        addTask();
+      }
+    });
+
+    // IDEA 2: click counter
+    var count = 0;
+
+    function changeCounter(amount) {
+      count = count + amount;
+      document.getElementById('counterNumber').textContent = count;
+    }
+
+    function resetCounter() {
+      count = 0;
+      document.getElementById('counterNumber').textContent = count;
+    }
+
+    // IDEA 3: dice roller
+    function rollDice() {
+      var number = Math.floor(Math.random() * 6) + 1;
+      document.getElementById('diceResult').textContent = number;
+    }
+  </script>
+
+</body>
+</html>
